@@ -31,7 +31,7 @@ function insert(work,time){
 
 function retrive(){
    //read
-    firebase.database().ref("doc/").once('value', (snap) => {
+    firebase.database().ref("doc/").on('value', (snap) => {
        
         console.log(snap.val());
         display.innerHTML="";
@@ -42,14 +42,14 @@ function retrive(){
     })
 
 }
-retrive();
+
 
 
 
 document.getElementById("add").addEventListener('click',()=>{
     console.log("Kaviyarasu");
     dataToFirebase(document.getElementById("work-el").value,document.getElementById("time-el").value);
-
+    retrive();
 })
 
 
