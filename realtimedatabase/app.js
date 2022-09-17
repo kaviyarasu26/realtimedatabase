@@ -17,6 +17,7 @@ var display=document.querySelector('#display');
 
 
 
+
 function dataToFirebase(work,time ){
     var id=new Date();
     firebase.database().ref("doc/"+id.getTime()).set({
@@ -25,8 +26,11 @@ function dataToFirebase(work,time ){
     })
 
 }
-function insert(work,time){
-    display.innerHTML+=`<div>${work}<br>${time}</div><hr>`
+function insert(work,time,primarykey){
+    display.innerHTML+=`<div>${work}<br>${time}</div><br><button id="del" onclick="del(${primarykey})">Delete</button><hr>`
+}
+function del(primarykey){
+    firebase.database().ref("doc/"+primarykey).remove();
 }
 
 function retrive(){
@@ -36,7 +40,7 @@ function retrive(){
         console.log(snap.val());
         display.innerHTML="";
         for(var i in snap.val()){
-            insert(snap.val()[i]["work"],snap.val()[i]["time"]);
+            insert(snap.val()[i]["work"],snap.val()[i]["time"],i);
 
         }
     })
@@ -45,11 +49,13 @@ function retrive(){
 
 
 
+retrive();
+
 
 document.getElementById("add").addEventListener('click',()=>{
     console.log("Kaviyarasu");
     dataToFirebase(document.getElementById("work-el").value,document.getElementById("time-el").value);
-    retrive();
+  
 })
 
 
